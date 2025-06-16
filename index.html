@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Random Clock Game</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    .clock-analog {
+      width: 200px;
+      height: 200px;
+      border: 8px solid #333;
+      border-radius: 50%;
+      position: relative;
+      margin: auto;
+    }
+
+    .hand {
+      position: absolute;
+      width: 50%;
+      height: 2px;
+      background: black;
+      top: 50%;
+      left: 50%;
+      transform-origin: 0% 50%;
+    }
+
+    .hour-hand {
+      width: 30%;
+      height: 4px;
+    }
+
+    .minute-hand {
+      width: 45%;
+    }
+
+    .center-dot {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: #333;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+<body class="bg-light">
+
+  <div class="container text-center py-5">
+    <h1 class="mb-4">Random Clock Game</h1>
+
+    <div id="clockContainer" class="mb-4">
+      <div id="digitalClock" class="fs-1 fw-bold"></div>
+      <div id="analogClock" class="clock-analog d-none">
+        <div class="hand hour-hand" id="hourHand"></div>
+        <div class="hand minute-hand" id="minuteHand"></div>
+        <div class="center-dot"></div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <input type="text" class="form-control w-50 mx-auto text-center" id="textInput" placeholder="Write the time in English (e.g., three fifteen)" oninput="validateLettersOnly(this)">
+    </div>
+
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-3">
+      <button class="btn btn-primary" onclick="toggleClock()">Switch Digital/Analog</button>
+      <button class="btn btn-success" onclick="generateRandomTime()">New Time</button>
+      <button class="btn btn-warning" onclick="checkAnswer()">Check Answer</button>
+    </div>
+
+    <div id="feedback" class="fs-5 fw-bold"></div>
+  </div>
+
+  <script>
+    let isDigital = true;
+    let currentHour = 0;
+    let currentMinute = 0;
+
+    const hourWords = [
+      "twelve", "one", "two", "three", "four", "five",
+      "six", "seven", "eight", "nine", "ten", "eleven"
+    ];
+
+    const minuteWords = {
+      0: "o'clock",
+      15: "fifteen",
+      30: "thirty",
+      45: "forty-five"
+    };
+
+    function generateRandomTime() {
+      currentHour = Math.floor(Math.random() * 12);
+      currentMinute = [0, 15, 30, 45][Math.floor(Math.random() * 4)];
+      updateClocks();
+      document.getElementById("textInput").value = "";
+      document.getElementById("feedback").textContent = "";
+    }
+
+    function updateClocks() {
+      const digital = document.getElementById('digitalClock');
+      const analog = document.getElementById('analogClock');
+      const hourHand = document.getElementById('hourHand');
+      const minuteHand = document.getElementById('minuteHand');
+
+      const paddedHour = currentHour.toString().padStart(2, '0');
+      const paddedMinute = currentMinute.toString().padStart(2, '0');
+      digital.textContent = `${paddedHour}:${paddedMinute}`;
+
+      const hourDeg = ((currentHour % 12) + currentMinute / 60) * 30;
+      const minuteDeg = currentMinute * 6;
+      hourHand.style.transform = `rotate(${hourDeg}deg)`;
+      minuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+
+      digital.classList.toggle('d-none', !isDigital);
+      analog.classList.toggle('d-none', isDigital);
+    }
+
+    function toggleClock() {
+      isDigital = !isDigital;
+      updateClocks();
+    }
+
+    function validateLettersOnly(input) {
+      input.value = input.value.replace(/[^a-zA-Z\s\-']/g, '');
+    }
+
+    function checkAnswer() {
+      const userInput = document.getElementById('textInput').value.trim().toLowerCase();
+
+      let expected = (currentMinute === 0)
+        ? `${hourWords[currentHour]} o'clock`
+        : `${hourWords[currentHour]} ${minuteWords[currentMinute]}`;
+
+      if (userInput === expected) {
+        document.getElementById("feedback").textContent = "✅ Correct!";
+        document.getElementById("feedback").classList.remove("text-danger");
+        document.getElementById("feedback").classList.add("text-success");
+      } else {
+        document.getElementById("feedback").textContent = `❌ Incorrect. The correct answer was: "${expected}"`;
+        document.getElementById("feedback").classList.remove("text-success");
+        document.getElementById("feedback").classList.add("text-danger");
+      }
+    }
+
+    // Initialize
+    generateRandomTime();
+  </script>
+
+</body>
+</html>
