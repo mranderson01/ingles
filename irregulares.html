@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irregular Verbs Practice</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f0f8ff;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+        }
+        h1 {
+            color: #007bff;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+        #verbDisplay {
+            font-size: 2.8em;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 10px;
+            text-transform: capitalize;
+        }
+        #meaningDisplay {
+            font-size: 1.5em;
+            color: #6c757d;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        .form-control {
+            font-size: 1.2em;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            text-align: center;
+            max-width: 300px;
+            margin: 0 auto 20px auto;
+        }
+        .btn-primary, .btn-success, .btn-info {
+            font-size: 1.1em;
+            padding: 10px 25px;
+            border-radius: 8px;
+            margin: 5px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #117a8b;
+        }
+        #feedback {
+            margin-top: 25px;
+            font-size: 1.3em;
+            font-weight: bold;
+            min-height: 40px;
+        }
+        .correct {
+            color: #28a745;
+        }
+        .incorrect {
+            color: #dc3545;
+        }
+        .info {
+            color: #ffc107;
+        }
+        .verb-form {
+            margin-bottom: 15px;
+        }
+        .verb-form label {
+            display: block;
+            margin-bottom: 5px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Irregular Verbs Practice</h1>
+        <p class="lead">Complete the verb forms below:</p>
+        <div id="verbDisplay"></div>
+        <div id="meaningDisplay"></div>
+        <div class="verb-form">
+            <label for="pastSimpleInput">Past Simple:</label>
+            <input type="text" class="form-control" id="pastSimpleInput" placeholder="Write the past simple form..." aria-label="Past simple form">
+        </div>
+        <div class="verb-form">
+            <label for="pastParticipleInput">Past Participle:</label>
+            <input type="text" class="form-control" id="pastParticipleInput" placeholder="Write the past participle form..." aria-label="Past participle form">
+        </div>
+        <button type="button" class="btn btn-primary" id="checkButton">Check Answer</button>
+        <button type="button" class="btn btn-info" id="hintButton">Hint</button>
+        <button type="button" class="btn btn-success" id="nextVerbButton">Next Verb</button>
+        <div id="feedback"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1bKTYiSeV4L1f3x2J" crossorigin="anonymous"></script>
+    <script>
+        const verbs = {
+            // 1st Group: IMPORTANT VERBS
+            "be": { spanish: "ser/estar", pastSimple: ["was", "were"], pastParticiple: "been" },
+            "do": { spanish: "hacer", pastSimple: "did", pastParticiple: "done" },
+            "have": { spanish: "tener/haber", pastSimple: "had", pastParticiple: "had" },
+            "come": { spanish: "venir", pastSimple: "came", pastParticiple: "come" },
+            "get": { spanish: "obtener/conseguir", pastSimple: "got", pastParticiple: "got" },
+            "go": { spanish: "ir", pastSimple: "went", pastParticiple: "gone" },
+            "make": { spanish: "hacer/fabricar", pastSimple: "made", pastParticiple: "made" },
+            "say": { spanish: "decir", pastSimple: "said", pastParticiple: "said" },
+            "tell": { spanish: "contar/decir", pastSimple: "told", pastParticiple: "told" },
+
+            // 2nd Group: PERCEPTION VERBS
+            "hear": { spanish: "oír", pastSimple: "heard", pastParticiple: "heard" },
+            "see": { spanish: "ver", pastSimple: "saw", pastParticiple: "seen" },
+            "smell": { spanish: "oler", pastSimple: "smelt", pastParticiple: "smelt" },
+
+            // 3rd Group: NO CHANGE
+            "cost": { spanish: "costar", pastSimple: "cost", pastParticiple: "cost" },
+            "cut": { spanish: "cortar", pastSimple: "cut", pastParticiple: "cut" },
+            "hit": { spanish: "golpear", pastSimple: "hit", pastParticiple: "hit" },
+            "hurt": { spanish: "herir/lastimar", pastSimple: "hurt", pastParticiple: "hurt" },
+            "let": { spanish: "dejar/permitir", pastSimple: "let", pastParticiple: "let" },
+            "put": { spanish: "poner", pastSimple: "put", pastParticiple: "put" },
+            "read": { spanish: "leer", pastSimple: "read", pastParticiple: "read" },
+            "shut": { spanish: "cerrar", pastSimple: "shut", pastParticiple: "shut" },
+
+            // 4th Group: I-E/O-E/I-EN and others
+            "bite": { spanish: "morder", pastSimple: "bit", pastParticiple: "bitten" },
+            "break": { spanish: "romper", pastSimple: "broke", pastParticiple: "broken" },
+            "choose": { spanish: "elegir", pastSimple: "chose", pastParticiple: "chosen" },
+            "drive": { spanish: "conducir", pastSimple: "drove", pastParticiple: "driven" },
+            "eat": { spanish: "comer", pastSimple: "ate", pastParticiple: "eaten" },
+            "fall": { spanish: "caer", pastSimple: "fell", pastParticiple: "fallen" },
+            "give": { spanish: "dar", pastSimple: "gave", pastParticiple: "given" },
+            "forget": { spanish: "olvidar", pastSimple: "forgot", pastParticiple: "forgotten" },
+            "forgive": { spanish: "perdonar", pastSimple: "forgave", pastParticiple: "forgiven" },
+            "freeze": { spanish: "congelar", pastSimple: "froze", pastParticiple: "frozen" },
+            "hide": { spanish: "esconder", pastSimple: "hid", pastParticiple: "hidden" },
+            "ride": { spanish: "montar", pastSimple: "rode", pastParticiple: "ridden" },
+            "rise": { spanish: "elevar/subir", pastSimple: "rose", pastParticiple: "risen" },
+            "shake": { spanish: "agitar/sacudir", pastSimple: "shook", pastParticiple: "shaken" },
+            "speak": { spanish: "hablar", pastSimple: "spoke", pastParticiple: "spoken" },
+            "steal": { spanish: "robar", pastSimple: "stole", pastParticiple: "stolen" },
+            "take": { spanish: "tomar/llevar", pastSimple: "took", pastParticiple: "taken" },
+            "wake": { spanish: "despertar", pastSimple: "woke", pastParticiple: "woken" },
+            "write": { spanish: "escribir", pastSimple: "wrote", pastParticiple: "written" },
+
+            // 5th Group: I/U-A/U
+            "begin": { spanish: "comenzar", pastSimple: "began", pastParticiple: "begun" },
+            "drink": { spanish: "beber", pastSimple: "drank", pastParticiple: "drunk" },
+            "ring": { spanish: "sonar/llamar", pastSimple: "rang", pastParticiple: "rung" },
+            "sing": { spanish: "cantar", pastSimple: "sang", pastParticiple: "sung" },
+            "swing": { spanish: "columpiarse", pastSimple: "swung", pastParticiple: "swung" },
+            "swim": { spanish: "nadar", pastSimple: "swam", pastParticiple: "swum" },
+
+            // 6th Group: AW-OW/EW/OWN
+            "blow": { spanish: "soplar", pastSimple: "blew", pastParticiple: "blown" },
+            "draw": { spanish: "dibujar", pastSimple: "drew", pastParticiple: "drawn" },
+            "fly": { spanish: "volar", pastSimple: "flew", pastParticiple: "flown" },
+            "grow": { spanish: "crecer", pastSimple: "grew", pastParticiple: "grown" },
+            "know": { spanish: "saber/conocer", pastSimple: "knew", pastParticiple: "known" },
+            "throw": { spanish: "lanzar", pastSimple: "threw", pastParticiple: "thrown" },
+
+            // 7th Group: -AUGHT/-OUGHT
+            "bring": { spanish: "traer", pastSimple: "brought", pastParticiple: "brought" },
+            "buy": { spanish: "comprar", pastSimple: "bought", pastParticiple: "bought" },
+            "catch": { spanish: "atrapar", pastSimple: "caught", pastParticiple: "caught" },
+            "fight": { spanish: "pelear/luchar", pastSimple: "fought", pastParticiple: "fought" },
+            "teach": { spanish: "enseñar", pastSimple: "taught", pastParticiple: "taught" },
+            "think": { spanish: "pensar", pastSimple: "thought", pastParticiple: "thought" },
+
+            // 8th Group: -STAND/-STOOD/-STOOD
+            "stand": { spanish: "estar de pie", pastSimple: "stood", pastParticiple: "stood" },
+            "understand": { spanish: "entender", pastSimple: "understood", pastParticiple: "understood" },
+
+            // 9th Group: -EE-/-E-/-E-
+            "bleed": { spanish: "sangrar", pastSimple: "bled", pastParticiple: "bled" },
+            "feed": { spanish: "alimentar", pastSimple: "fed", pastParticiple: "fed" },
+            "feel": { spanish: "sentir", pastSimple: "felt", pastParticiple: "felt" },
+            "keep": { spanish: "mantener/guardar", pastSimple: "kept", pastParticiple: "kept" },
+            "meet": { spanish: "conocer/encontrar", pastSimple: "met", pastParticiple: "met" },
+            "sleep": { spanish: "dormir", pastSimple: "slept", pastParticiple: "slept" },
+            "sweep": { spanish: "barrer", pastSimple: "swept", pastParticiple: "swept" },
+
+            // 10th Group: -D/-T/-T
+            "build": { spanish: "construir", pastSimple: "built", pastParticiple: "built" },
+            "lend": { spanish: "prestar", pastSimple: "lent", pastParticiple: "lent" },
+            "send": { spanish: "enviar", pastSimple: "sent", pastParticiple: "sent" },
+            "spend": { spanish: "gastar", pastSimple: "spent", pastParticiple: "spent" },
+
+            // 11th Group: -T/-T
+            "burn": { spanish: "quemar", pastSimple: "burnt", pastParticiple: "burnt" },
+            "dream": { spanish: "soñar", pastSimple: "dreamt", pastParticiple: "dreamt" },
+            "learn": { spanish: "aprender", pastSimple: "learnt", pastParticiple: "learnt" },
+            "leave": { spanish: "dejar/partir", pastSimple: "left", pastParticiple: "left" },
+            "light": { spanish: "encender/iluminar", pastSimple: "lit", pastParticiple: "lit" },
+            "lose": { spanish: "perder", pastSimple: "lost", pastParticiple: "lost" },
+            "mean": { spanish: "significar", pastSimple: "meant", pastParticiple: "meant" },
+            "shoot": { spanish: "disparar", pastSimple: "shot", pastParticiple: "shot" },
+            "sit": { spanish: "sentarse", pastSimple: "sat", pastParticiple: "sat" },
+            "spell": { spanish: "deletrear", pastSimple: "spelt", pastParticiple: "spelt" },
+
+            // 12th Group: MISCELLANEOUS
+            "become": { spanish: "llegar a ser", pastSimple: "became", pastParticiple: "become" },
+            "find": { spanish: "encontrar", pastSimple: "found", pastParticiple: "found" },
+            "hang": { spanish: "colgar", pastSimple: "hung", pastParticiple: "hung" },
+            "hold": { spanish: "sostener", pastSimple: "held", pastParticiple: "held" },
+            "lay": { spanish: "poner/colocar", pastSimple: "laid", pastParticiple: "laid" },
+            "lie": { spanish: "mentir/yacer", pastSimple: "lay", pastParticiple: "lain" },
+            "pay": { spanish: "pagar", pastSimple: "paid", pastParticiple: "paid" },
+            "run": { spanish: "correr", pastSimple: "ran", pastParticiple: "run" },
+            "sell": { spanish: "vender", pastSimple: "sold", pastParticiple: "sold" },
+            "shine": { spanish: "brillar", pastSimple: "shone", pastParticiple: "shone" },
+            "show": { spanish: "mostrar", pastSimple: "showed", pastParticiple: "shown" },
+            "wear": { spanish: "vestir/llevar puesto", pastSimple: "wore", pastParticiple: "worn" },
+            "win": { spanish: "ganar", pastSimple: "won", pastParticiple: "won" }
+        };
+
+        let currentVerb = "";
+        let currentVerbData = null;
+
+        const verbDisplay = document.getElementById("verbDisplay");
+        const meaningDisplay = document.getElementById("meaningDisplay");
+        const pastSimpleInput = document.getElementById("pastSimpleInput");
+        const pastParticipleInput = document.getElementById("pastParticipleInput");
+        const checkButton = document.getElementById("checkButton");
+        const hintButton = document.getElementById("hintButton");
+        const nextVerbButton = document.getElementById("nextVerbButton");
+        const feedbackDiv = document.getElementById("feedback");
+
+        function getRandomVerb() {
+            const verbKeys = Object.keys(verbs);
+            const randomIndex = Math.floor(Math.random() * verbKeys.length);
+            return verbKeys[randomIndex];
+        }
+
+        function loadNewVerb() {
+            currentVerb = getRandomVerb();
+            currentVerbData = verbs[currentVerb];
+            verbDisplay.textContent = currentVerb;
+            meaningDisplay.textContent = `(${currentVerbData.spanish})`;
+            pastSimpleInput.value = "";
+            pastParticipleInput.value = "";
+            feedbackDiv.textContent = "";
+            feedbackDiv.classList.remove("correct", "incorrect", "info");
+            pastSimpleInput.focus();
+        }
+
+        function checkAnswer() {
+            const pastSimpleAnswer = pastSimpleInput.value.trim().toLowerCase();
+            const pastParticipleAnswer = pastParticipleInput.value.trim().toLowerCase();
+            
+            const correctPastSimple = Array.isArray(currentVerbData.pastSimple) 
+                ? currentVerbData.pastSimple.includes(pastSimpleAnswer)
+                : pastSimpleAnswer === currentVerbData.pastSimple;
+            
+            const correctPastParticiple = pastParticipleAnswer === currentVerbData.pastParticiple;
+
+            if (correctPastSimple && correctPastParticiple) {
+                feedbackDiv.textContent = "¡Correcto! ¡Muy bien!";
+                feedbackDiv.classList.remove("incorrect", "info");
+                feedbackDiv.classList.add("correct");
+            } else {
+                let feedback = "Incorrecto. ";
+                if (!correctPastSimple) {
+                    feedback += `El pasado simple es: ${Array.isArray(currentVerbData.pastSimple) 
+                        ? currentVerbData.pastSimple.join(" / ") 
+                        : currentVerbData.pastSimple}. `;
+                }
+                if (!correctPastParticiple) {
+                    feedback += `El participio es: ${currentVerbData.pastParticiple}`;
+                }
+                feedbackDiv.textContent = feedback;
+                feedbackDiv.classList.remove("correct", "info");
+                feedbackDiv.classList.add("incorrect");
+            }
+        }
+
+        function showHint() {
+            const pastSimpleHint = Array.isArray(currentVerbData.pastSimple) 
+                ? currentVerbData.pastSimple[0][0] + "..."
+                : currentVerbData.pastSimple[0] + "...";
+            const pastParticipleHint = currentVerbData.pastParticiple[0] + "...";
+            
+            feedbackDiv.textContent = `Pista: Past Simple: ${pastSimpleHint}, Past Participle: ${pastParticipleHint}`;
+            feedbackDiv.classList.remove("correct", "incorrect");
+            feedbackDiv.classList.add("info");
+        }
+
+        // Event Listeners
+        checkButton.addEventListener("click", checkAnswer);
+        hintButton.addEventListener("click", showHint);
+        nextVerbButton.addEventListener("click", loadNewVerb);
+
+        // Permitir Enter para revisar la respuesta
+        pastSimpleInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                pastParticipleInput.focus();
+            }
+        });
+
+        pastParticipleInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                checkButton.click();
+            }
+        });
+
+        // Cargar el primer verbo al iniciar
+        loadNewVerb();
+    </script>
+</body>
+</html>
