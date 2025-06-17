@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regular Verbs Past Simple Practice</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f0f8ff; /* Azul claro muy suave */
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            max-width: 650px;
+            width: 90%;
+            text-align: center;
+        }
+        h1 {
+            color: #007bff;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+        #verbDisplay {
+            font-size: 2.8em;
+            font-weight: bold;
+            color: #28a745; /* Verde para el verbo */
+            margin-bottom: 30px;
+            text-transform: capitalize;
+        }
+        .form-control {
+            font-size: 1.2em;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            text-align: center;
+            max-width: 300px;
+            margin: 0 auto 20px auto;
+        }
+        .btn-primary, .btn-success, .btn-info {
+            font-size: 1.1em;
+            padding: 10px 25px;
+            border-radius: 8px;
+            margin: 5px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .btn-success {
+            background-color: #28a745; /* Verde para reiniciar */
+            border-color: #28a745;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+        .btn-info {
+            background-color: #17a2b8; /* Azul claro para la pista */
+            border-color: #17a2b8;
+        }
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #117a8b;
+        }
+        #feedback {
+            margin-top: 25px;
+            font-size: 1.3em;
+            font-weight: bold;
+            min-height: 40px; /* Para mantener el espacio */
+        }
+        .correct {
+            color: #28a745; /* Verde */
+        }
+        .incorrect {
+            color: #dc3545; /* Rojo */
+        }
+        .info {
+            color: #ffc107; /* Naranja */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Past Simple Regular Verbs</h1>
+        <p class="lead">Write the past simple form of the verb below:</p>
+        <div id="verbDisplay"></div>
+        <input type="text" class="form-control" id="answerInput" placeholder="Write the past form here..." aria-label="Verb past form">
+        <button type="button" class="btn btn-primary" id="checkButton">Check Answer</button>
+        <button type="button" class="btn btn-info" id="hintButton">Hint</button>
+        <button type="button" class="btn btn-success" id="nextVerbButton">Next Verb</button>
+        <div id="feedback"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1bKTYiSeV4L1f3x2J" crossorigin="anonymous"></script>
+    <script>
+        const verbs = [
+            "Act", "Add", "Ask", "Answer", "Arrive", "Brush", "Belong", "Beg", "Believe", "Cook",
+            "Call", "Change", "Charge", "Clean", "Cry", "dance", "Dress", "Die", "Dry", "Enjoy",
+            "Explain", "Follow", "Finish", "Help", "Hope", "Happen", "Imagine", "Kiss", "Kill", "Laugh",
+            "Like", "Look", "Miss", "Marry", "Open", "Play", "Prefer", "Promise", "Repeat", "rain",
+            "remember", "return", "Show", "Smile", "Study", "Stop", "Talk", "Thank", "Touch", "Use",
+            "Visit", "Wait", "Want", "Walk", "Wash", "Wish", "Work"
+        ];
+
+        let currentVerb = "";
+        let currentPastForm = "";
+
+        const verbDisplay = document.getElementById("verbDisplay");
+        const answerInput = document.getElementById("answerInput");
+        const checkButton = document.getElementById("checkButton");
+        const hintButton = document.getElementById("hintButton");
+        const nextVerbButton = document.getElementById("nextVerbButton");
+        const feedbackDiv = document.getElementById("feedback");
+
+        function getRandomVerb() {
+            const randomIndex = Math.floor(Math.random() * verbs.length);
+            return verbs[randomIndex].toLowerCase(); // Convertir a minúsculas para consistencia
+        }
+
+        function getPastSimple(verb) {
+            // Reglas básicas para verbos regulares:
+            // 1. Si termina en 'e', solo se añade 'd'.
+            if (verb.endsWith('e')) {
+                return verb + 'd';
+            }
+            // 2. Si termina en consonante + 'y', se cambia 'y' por 'ied'.
+            // Asegurarse de que no sea una vocal antes de 'y'
+            const lastChar = verb[verb.length - 1];
+            const secondLastChar = verb[verb.length - 2];
+            const vowels = ['a', 'e', 'i', 'o', 'u'];
+            if (lastChar === 'y' && !vowels.includes(secondLastChar)) {
+                return verb.slice(0, -1) + 'ied';
+            }
+            // 3. Verbos CVC (Consonante-Vocal-Consonante) que duplican la última consonante.
+            // Para la lista dada, algunos casos son 'plan', 'stop', 'prefer', 'admit' (no en tu lista, pero es un ejemplo).
+            // Esta regla es más compleja, así que la manejaremos para los que están en tu lista y aplican.
+            const verbsToDoubleConsonant = ["stop", "prefer", "beg", "plan"]; // 'plan' no está en tu lista, pero lo incluyo por si acaso. 'Beg' y 'stop' sí.
+            if (verbsToDoubleConsonant.includes(verb)) {
+                return verb + verb[verb.length - 1] + 'ed';
+            }
+            // 4. La mayoría añade 'ed'.
+            return verb + 'ed';
+        }
+
+        function loadNewVerb() {
+            currentVerb = getRandomVerb();
+            currentPastForm = getPastSimple(currentVerb);
+            verbDisplay.textContent = currentVerb;
+            answerInput.value = "";
+            feedbackDiv.textContent = "";
+            feedbackDiv.classList.remove("correct", "incorrect", "info");
+            answerInput.focus(); // Enfocar el input para escribir
+        }
+
+        function checkAnswer() {
+            const userAnswer = answerInput.value.trim().toLowerCase();
+            if (userAnswer === currentPastForm) {
+                feedbackDiv.textContent = "Correct! Well done!";
+                feedbackDiv.classList.remove("incorrect", "info");
+                feedbackDiv.classList.add("correct");
+            } else {
+                feedbackDiv.textContent = `Incorrect. The correct form is: ${currentPastForm}`;
+                feedbackDiv.classList.remove("correct", "info");
+                feedbackDiv.classList.add("incorrect");
+            }
+        }
+
+        function showHint() {
+            // Muestra la primera letra de la respuesta y puntos suspensivos
+            if (currentPastForm.length > 0) {
+                feedbackDiv.textContent = `Hint: ${currentPastForm[0]}...`;
+                feedbackDiv.classList.remove("correct", "incorrect");
+                feedbackDiv.classList.add("info");
+            }
+        }
+
+        // Event Listeners
+        checkButton.addEventListener("click", checkAnswer);
+        hintButton.addEventListener("click", showHint);
+        nextVerbButton.addEventListener("click", loadNewVerb);
+
+        // Permitir Enter para revisar la respuesta
+        answerInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                checkButton.click();
+            }
+        });
+
+        // Cargar el primer verbo al iniciar
+        loadNewVerb();
+    </script>
+</body>
+</html>
