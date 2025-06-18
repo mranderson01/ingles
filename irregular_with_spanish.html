@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practica de Pasado Simple 1 </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+.container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+}
+
+h1 {
+    color: #0056b3;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.phrase-item {
+    background-color: #e9ecef;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 25px; /* Más espacio entre frases */
+    position: relative;
+}
+
+.phrase-number {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.phrase-text {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    display: block; /* Para que ocupe su propia línea si es necesario */
+}
+
+/* Nuevos estilos para la sección de traducción del usuario */
+.user-translation-section {
+    margin-top: 15px;
+    border-top: 1px dashed #ccc;
+    padding-top: 15px;
+}
+
+.user-translation-section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px; /* Espacio debajo de cada input-group */
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+}
+
+.input-group label {
+    flex-basis: 100%; /* La etiqueta ocupa todo el ancho */
+    margin-bottom: 5px;
+}
+
+.verb-input,
+.translation-input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    margin-right: 10px;
+    min-width: 150px; /* Ancho mínimo para los inputs */
+}
+
+.translation-input {
+    min-width: 250px; /* La traducción puede ser más larga */
+}
+
+.buttons {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+    white-space: nowrap; /* Evita que el texto del botón se rompa */
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-check-translation {
+    background-color: #ffc107; /* Color amarillo/naranja para traducir */
+    color: #333;
+}
+.btn-check-translation:hover {
+    background-color: #e0a800;
+}
+
+.btn-show-translation {
+    background-color: #17a2b8; /* Color azul claro para mostrar traducción */
+}
+.btn-show-translation:hover {
+    background-color: #138496;
+}
+
+
+.feedback {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 0.95em;
+}
+
+.feedback.correct {
+    color: #28a745;
+}
+
+.feedback.incorrect {
+    color: #dc3545;
+}
+
+.correct-answer {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #007bff;
+    display: none; /* Oculto por defecto */
+    font-size: 0.95em;
+}
+
+.correct-translation {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #17a2b8; /* Usar el color del botón de mostrar traducción */
+    display: none; /* Oculto por defecto */
+    font-size: 0.95em;
+}
+
+/* Estilos para el espacio debajo del input cuando no hay botón, para alinear los de abajo */
+.input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.input-row .btn {
+    margin-left: auto; /* Empuja el botón a la derecha si hay espacio */
+}
+
+@media (max-width: 600px) {
+    .input-group, .input-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .verb-input, .translation-input {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+    .btn {
+        width: 100%;
+    }
+}
+    </style>
+    <div class="container">
+        <h1>Practica de Pasado Simple 1</h1>
+        <p>Completa las frases con el pasado simple del verbo entre paréntesis. Puedes traducir la frase al español y comprobar la respuesta.</p>
+
+        <div id="phrases-container">
+            </div>
+    </div>
+ <script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const phrases = [
+        {
+            englishTemplate: "I ({verb}) a new song on the radio.",
+            verbInfinitive: "hear",
+            correctPastSimple: "heard",
+            correctTranslation: "Yo oí una canción nueva en la radio."
+        },
+        {
+            englishTemplate: "I ({verb}) three books last week.",
+            verbInfinitive: "read",
+            correctPastSimple: "read", // Pronunciación diferente, pero se escribe igual
+            correctTranslation: "Yo leí tres libros la semana pasada."
+        },
+        {
+            englishTemplate: "They ({verb}) French to the waitress.",
+            verbInfinitive: "speak",
+            correctPastSimple: "spoke",
+            correctTranslation: "Ellos hablaron francés con la camarera."
+        },
+        {
+            englishTemplate: "He ({verb}) during the class, but now he doesn't understand.",
+            verbInfinitive: "understand",
+            correctPastSimple: "understood",
+            correctTranslation: "Él entendió durante la clase, pero ahora no entiende."
+        },
+        {
+            englishTemplate: "I ({verb}) to buy some milk.",
+            verbInfinitive: "forget",
+            correctPastSimple: "forgot",
+            correctTranslation: "Se me olvidó comprar leche."
+        },
+        {
+            englishTemplate: "She ({verb}) a baby in June.",
+            verbInfinitive: "have",
+            correctPastSimple: "had",
+            correctTranslation: "Ella tuvo un bebé en junio."
+        },
+        {
+            englishTemplate: "You ({verb}) your keys last week.",
+            verbInfinitive: "lose",
+            correctPastSimple: "lost",
+            correctTranslation: "Tú perdiste tus llaves la semana pasada."
+        },
+        {
+            englishTemplate: "They ({verb}) 500m.",
+            verbInfinitive: "swim",
+            correctPastSimple: "swam",
+            correctTranslation: "Ellos nadaron 500m."
+        },
+        {
+            englishTemplate: "I ({verb}) my mother a CD for Christmas.",
+            verbInfinitive: "give",
+            correctPastSimple: "gave",
+            correctTranslation: "Le di un CD a mi madre por Navidad."
+        },
+        {
+            englishTemplate: "At the age of 23, she ({verb}) a doctor.",
+            verbInfinitive: "become",
+            correctPastSimple: "became",
+            correctTranslation: "A la edad de 23 años, ella se convirtió en doctora."
+        },
+        {
+            englishTemplate: "I ({verb}) the answer yesterday.",
+            verbInfinitive: "know",
+            correctPastSimple: "knew",
+            correctTranslation: "Yo supe la respuesta ayer."
+        },
+        {
+            englishTemplate: "He ({verb}) me that he lived in Toronto.",
+            verbInfinitive: "tell",
+            correctPastSimple: "told",
+            correctTranslation: "Él me dijo que vivía en Toronto."
+        },
+        {
+            englishTemplate: "We ({verb}) John £200.",
+            verbInfinitive: "lend",
+            correctPastSimple: "lent",
+            correctTranslation: "Nosotros le prestamos £200 a John."
+        },
+        {
+            englishTemplate: "She ({verb}) too much coffee yesterday.",
+            verbInfinitive: "drink",
+            correctPastSimple: "drank",
+            correctTranslation: "Ella bebió demasiado café ayer."
+        },
+        {
+            englishTemplate: "The children ({verb}) in the car.",
+            verbInfinitive: "sleep",
+            correctPastSimple: "slept",
+            correctTranslation: "Los niños durmieron en el coche."
+        },
+        {
+            englishTemplate: "He ({verb}) his promise.",
+            verbInfinitive: "keep",
+            correctPastSimple: "kept",
+            correctTranslation: "Él mantuvo su promesa."
+        },
+        {
+            englishTemplate: "I ({verb}) steak for dinner.",
+            verbInfinitive: "choose",
+            correctPastSimple: "chose",
+            correctTranslation: "Yo elegí bistec para cenar."
+        },
+        {
+            englishTemplate: "The film ({verb}) late.",
+            verbInfinitive: "begin",
+            correctPastSimple: "began",
+            correctTranslation: "La película empezó tarde."
+        },
+        {
+            englishTemplate: "We ({verb}) to Sydney.",
+            verbInfinitive: "fly",
+            correctPastSimple: "flew",
+            correctTranslation: "Nosotros volamos a Sídney."
+        },
+        {
+            englishTemplate: "They ({verb}) to Beijing.",
+            verbInfinitive: "drive",
+            correctPastSimple: "drove",
+            correctTranslation: "Ellos condujeron a Pekín."
+        },
+        {
+            englishTemplate: "He ({verb}) English at the University.",
+            verbInfinitive: "teach",
+            correctPastSimple: "taught",
+            correctTranslation: "Él enseñó inglés en la Universidad."
+        },
+        {
+            englishTemplate: "I ({verb}) you an email earlier.",
+            verbInfinitive: "send",
+            correctPastSimple: "sent",
+            correctTranslation: "Te envié un correo electrónico antes."
+        },
+        {
+            englishTemplate: "We ({verb}) the house at 7am.",
+            verbInfinitive: "leave",
+            correctPastSimple: "left",
+            correctTranslation: "Nosotros salimos de casa a las 7 de la mañana."
+        },
+        {
+            englishTemplate: "He ({verb}) terrible after eating the prawns.",
+            verbInfinitive: "feel",
+            correctPastSimple: "felt",
+            correctTranslation: "Él se sintió terrible después de comer las gambas."
+        },
+        {
+            englishTemplate: "She ({verb}) some chocolates to the party.",
+            verbInfinitive: "bring",
+            correctPastSimple: "brought",
+            correctTranslation: "Ella trajo algunos chocolates a la fiesta."
+        }
+    ];
+
+    const phrasesContainer = document.getElementById('phrases-container');
+
+    phrases.forEach((phrase, index) => {
+        const phraseItem = document.createElement('div');
+        phraseItem.classList.add('phrase-item');
+
+        const englishDisplay = phrase.englishTemplate.replace('{verb}', `(${phrase.verbInfinitive})`);
+
+        phraseItem.innerHTML = `
+            <div class="phrase-content">
+                <span class="phrase-number">${index + 1})</span>
+                <span class="phrase-text">${englishDisplay}</span>
+            </div>
+
+            <div class="input-row">
+                <label for="verb-input-${index}">Verbo en pasado:</label>
+                <input type="text" class="verb-input" id="verb-input-${index}" placeholder="Escribe el verbo en pasado simple">
+                <button class="btn btn-primary" data-index="${index}" data-action="check-verb">Revisar Verbo</button>
+                <button class="btn btn-secondary" data-index="${index}" data-action="show-verb">Mostrar Verbo</button>
+            </div>
+            <div class="feedback" id="feedback-verb-${index}"></div>
+            <div class="correct-answer" id="correct-verb-${index}">Respuesta Correcta: <strong>${phrase.correctPastSimple}</strong></div>
+
+            <div class="user-translation-section">
+                <div class="input-row">
+                    <label for="translation-input-${index}">Tu traducción:</label>
+                    <input type="text" class="translation-input" id="translation-input-${index}" placeholder="Traduce la frase al español">
+                    <button class="btn btn-check-translation" data-index="${index}" data-action="check-translation">Revisar Traducción</button>
+                    <button class="btn btn-show-translation" data-index="${index}" data-action="show-translation">Mostrar Traducción</button>
+                </div>
+                <div class="feedback" id="feedback-translation-${index}"></div>
+                <div class="correct-translation" id="correct-translation-${index}">Traducción Correcta: <strong>${phrase.correctTranslation}</strong></div>
+            </div>
+        `;
+        phrasesContainer.appendChild(phraseItem);
+    });
+
+    phrasesContainer.addEventListener('click', (event) => {
+        const target = event.target;
+        const index = target.dataset.index;
+
+        if (!index) return; // Si no hay índice, no es un botón que nos interese
+
+        const action = target.dataset.action;
+
+        // Elementos comunes para verbos y traducción
+        const verbInput = document.getElementById(`verb-input-${index}`);
+        const feedbackVerb = document.getElementById(`feedback-verb-${index}`);
+        const correctVerb = document.getElementById(`correct-verb-${index}`);
+
+        const translationInput = document.getElementById(`translation-input-${index}`);
+        const feedbackTranslation = document.getElementById(`feedback-translation-${index}`);
+        const correctTranslation = document.getElementById(`correct-translation-${index}`);
+
+        const phraseData = phrases[index];
+
+        switch (action) {
+            case 'check-verb':
+                const userAnswerVerb = verbInput.value.trim().toLowerCase();
+                const correctAnswerVerb = phraseData.correctPastSimple.toLowerCase();
+
+                if (userAnswerVerb === correctAnswerVerb) {
+                    feedbackVerb.textContent = '¡Correcto!';
+                    feedbackVerb.classList.remove('incorrect');
+                    feedbackVerb.classList.add('correct');
+                } else {
+                    feedbackVerb.textContent = 'Incorrecto. Inténtalo de nuevo.';
+                    feedbackVerb.classList.remove('correct');
+                    feedbackVerb.classList.add('incorrect');
+                }
+                correctVerb.style.display = 'none'; // Oculta la respuesta correcta si se revisa
+                break;
+
+            case 'show-verb':
+                correctVerb.style.display = 'block';
+                feedbackVerb.textContent = ''; // Limpia el feedback
+                break;
+
+            case 'check-translation':
+                const userAnswerTranslation = translationInput.value.trim().toLowerCase();
+                const correctTranslationText = phraseData.correctTranslation.toLowerCase();
+
+                // Simplificación básica para la comparación de traducción:
+                // Elimina signos de puntuación y espacios extra para una comparación más flexible
+                const cleanUserTranslation = userAnswerTranslation.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," ");
+                const cleanCorrectTranslation = correctTranslationText.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," ");
+
+
+                if (cleanUserTranslation === cleanCorrectTranslation) {
+                    feedbackTranslation.textContent = '¡Traducción Correcta!';
+                    feedbackTranslation.classList.remove('incorrect');
+                    feedbackTranslation.classList.add('correct');
+                } else {
+                    feedbackTranslation.textContent = 'Traducción incorrecta. Revisa ortografía o fraseo.';
+                    feedbackTranslation.classList.remove('correct');
+                    feedbackTranslation.classList.add('incorrect');
+                }
+                correctTranslation.style.display = 'none';
+                break;
+
+            case 'show-translation':
+                correctTranslation.style.display = 'block';
+                feedbackTranslation.textContent = '';
+                break;
+        }
+    });
+});
+ </script>
+</body>
+</html>
