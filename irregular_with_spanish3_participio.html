@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practica de Pasado Simple y Traducción</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+.container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+}
+
+h1 {
+    color: #0056b3;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.phrase-item {
+    background-color: #e9ecef;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 25px; /* Más espacio entre frases */
+    position: relative;
+}
+
+.phrase-number {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.phrase-text {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    display: block; /* Para que ocupe su propia línea si es necesario */
+}
+
+/* Nuevos estilos para la sección de traducción del usuario */
+.user-translation-section {
+    margin-top: 15px;
+    border-top: 1px dashed #ccc;
+    padding-top: 15px;
+}
+
+.user-translation-section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Para el contenedor de cada input y sus botones */
+.input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espacio entre los elementos de la fila */
+    margin-bottom: 10px; /* Espacio debajo de cada input-row */
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+}
+
+.input-row label {
+    flex-shrink: 0; /* Evita que la etiqueta se encoja */
+    margin-right: 5px; /* Pequeño espacio a la derecha de la etiqueta */
+}
+
+.verb-input,
+.translation-input {
+    flex-grow: 1; /* Permite que el input crezca para ocupar el espacio disponible */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    min-width: 150px; /* Ancho mínimo para los inputs */
+}
+
+.translation-input {
+    min-width: 250px; /* La traducción puede ser más larga */
+}
+
+.btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+    white-space: nowrap; /* Evita que el texto del botón se rompa */
+    flex-shrink: 0; /* Evita que los botones se encojan */
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-check-translation {
+    background-color: #ffc107; /* Color amarillo/naranja para traducir */
+    color: #333; /* Texto oscuro para contraste */
+}
+.btn-check-translation:hover {
+    background-color: #e0a800;
+}
+
+.btn-show-translation {
+    background-color: #17a2b8; /* Color azul claro para mostrar traducción */
+}
+.btn-show-translation:hover {
+    background-color: #138496;
+}
+
+.feedback {
+    margin-top: 5px; /* Menos espacio si va debajo de un input-row */
+    margin-bottom: 10px; /* Espacio antes del siguiente elemento */
+    font-weight: bold;
+    font-size: 0.95em;
+}
+
+.feedback.correct {
+    color: #28a745; /* Verde para correcto */
+}
+
+.feedback.incorrect {
+    color: #dc3545; /* Rojo para incorrecto */
+}
+
+.correct-answer {
+    margin-top: 5px; /* Menos espacio */
+    margin-bottom: 10px; /* Espacio antes del siguiente elemento */
+    font-weight: bold;
+    color: #007bff; /* Azul para respuesta del verbo */
+    display: none; /* Oculto por defecto */
+    font-size: 0.95em;
+}
+
+.correct-translation {
+    margin-top: 5px; /* Menos espacio */
+    margin-bottom: 10px; /* Espacio antes del siguiente elemento */
+    font-weight: bold;
+    color: #17a2b8; /* Usar el color del botón de mostrar traducción */
+    display: none; /* Oculto por defecto */
+    font-size: 0.95em;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+    .input-row {
+        flex-direction: column; /* Apila los elementos en columnas */
+        align-items: flex-start; /* Alinea los elementos a la izquierda */
+        gap: 8px;
+    }
+    .input-row label {
+        width: 100%; /* La etiqueta ocupa todo el ancho */
+    }
+    .verb-input,
+    .translation-input {
+        width: 100%; /* Los inputs ocupan todo el ancho disponible */
+        margin-right: 0; /* Elimina el margen derecho */
+    }
+    /* Estilos para los botones en dispositivos pequeños para que ocupen todo el ancho */
+    .input-row .btn {
+        width: 100%;
+        margin-left: 0; /* Elimina el margen izquierdo automático */
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5em;
+    }
+    .btn {
+        padding: 10px; /* Hacer los botones un poco más grandes al tacto */
+    }
+}
+    </style>
+    <div class="container">
+        <h1>Practica de Pasado Simple y Traducción</h1>
+        <p>Completa las frases con el pasado simple del verbo entre paréntesis y traduce la frase al español. Puedes revisar cada parte por separado.</p>
+
+        <div id="phrases-container">
+            </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const phrases = [
+        {
+            englishTemplate: "Julie wasn't at home. She had ({verb}) to the shops.",
+            verbInfinitive: "go",
+            correctPastSimple: "gone", // Nota: para participio pasado, la propiedad sigue siendo 'correctPastSimple' por consistencia de código.
+            correctTranslation: "Julie no estaba en casa. Había ido de compras."
+        },
+        {
+            englishTemplate: "We've already ({verb}) lunch.",
+            verbInfinitive: "have",
+            correctPastSimple: "had",
+            correctTranslation: "Ya hemos almorzado."
+        },
+        {
+            englishTemplate: "This was the first time she had ({verb}) her homework.",
+            verbInfinitive: "do",
+            correctPastSimple: "done",
+            correctTranslation: "Esta era la primera vez que había hecho su tarea."
+        },
+        {
+            englishTemplate: "They have ({verb}) painting the living room.",
+            verbInfinitive: "begin",
+            correctPastSimple: "begun",
+            correctTranslation: "Ellos han comenzado a pintar la sala de estar."
+        },
+        {
+            englishTemplate: "We have ({verb}) this secret for three years.",
+            verbInfinitive: "keep",
+            correctPastSimple: "kept",
+            correctTranslation: "Hemos guardado este secreto durante tres años."
+        },
+        {
+            englishTemplate: "He has never ({verb}) a motorbike before.",
+            verbInfinitive: "drive",
+            correctPastSimple: "driven",
+            correctTranslation: "Él nunca antes ha conducido una motocicleta."
+        },
+        {
+            englishTemplate: "I have ({verb}) sick all week.",
+            verbInfinitive: "be",
+            correctPastSimple: "been",
+            correctTranslation: "He estado enfermo toda la semana."
+        },
+        {
+            englishTemplate: "By the time we arrived, the children had ({verb}) all the chocolate.",
+            verbInfinitive: "eat",
+            correctPastSimple: "eaten",
+            correctTranslation: "Para cuando llegamos, los niños se habían comido todo el chocolate."
+        },
+        {
+            englishTemplate: "The books had ({verb}) off the table and were all over the floor.",
+            verbInfinitive: "fall",
+            correctPastSimple: "fallen",
+            correctTranslation: "Los libros se habían caído de la mesa y estaban por todo el suelo."
+        },
+        {
+            englishTemplate: "Are you okay? I've ({verb}) better.",
+            verbInfinitive: "feel",
+            correctPastSimple: "felt",
+            correctTranslation: "¿Estás bien? Me he sentido mejor."
+        },
+        {
+            englishTemplate: "I'd ({verb}) my umbrella to John, so I got wet.",
+            verbInfinitive: "lend",
+            correctPastSimple: "lent",
+            correctTranslation: "Le había prestado mi paraguas a John, así que me mojé."
+        },
+        {
+            englishTemplate: "I've been looking for ages but I haven't ({verb}) my keys yet.",
+            verbInfinitive: "find",
+            correctPastSimple: "found",
+            correctTranslation: "He estado buscando durante mucho tiempo pero aún no he encontrado mis llaves."
+        },
+        {
+            englishTemplate: "The birds have ({verb}) south for the winter.",
+            verbInfinitive: "fly",
+            correctPastSimple: "flown",
+            correctTranslation: "Los pájaros han volado hacia el sur para el invierno."
+        },
+        {
+            englishTemplate: "She has finally ({verb}).",
+            verbInfinitive: "come",
+            correctPastSimple: "come",
+            correctTranslation: "Ella finalmente ha llegado."
+        },
+        {
+            englishTemplate: "Don't worry, we haven't ({verb}) about the meeting.",
+            verbInfinitive: "forget",
+            correctPastSimple: "forgotten",
+            correctTranslation: "No te preocupes, no nos hemos olvidado de la reunión."
+        },
+        {
+            englishTemplate: "It had ({verb}) very cold, so we went inside.",
+            verbInfinitive: "become",
+            correctPastSimple: "become",
+            correctTranslation: "Se había puesto muy frío, así que entramos."
+        },
+        {
+            englishTemplate: "You have ({verb}) a lot of clothes recently.",
+            verbInfinitive: "buy",
+            correctPastSimple: "bought",
+            correctTranslation: "Has comprado mucha ropa recientemente."
+        },
+        {
+            englishTemplate: "I'd ({verb}) a lovely new bike for my birthday, so I was keen to try it.",
+            verbInfinitive: "get",
+            correctPastSimple: "gotten", // 'got' también es aceptado en participio en inglés británico, pero 'gotten' es común en americano. Usamos 'gotten' para ser explícitos.
+            correctTranslation: "Había conseguido una bicicleta nueva y preciosa para mi cumpleaños, así que estaba deseando probarla."
+        },
+        {
+            englishTemplate: "She'd ({verb}) a cake to the party, but we didn't eat it.",
+            verbInfinitive: "bring",
+            correctPastSimple: "brought",
+            correctTranslation: "Ella había traído un pastel a la fiesta, pero no lo comimos."
+        },
+        {
+            englishTemplate: "Have you ({verb}) your university yet?",
+            verbInfinitive: "choose",
+            correctPastSimple: "chosen",
+            correctTranslation: "¿Ya has elegido tu universidad?"
+        },
+        {
+            englishTemplate: "Have you ever ({verb}) Turkish coffee?",
+            verbInfinitive: "drink",
+            correctPastSimple: "drunk",
+            correctTranslation: "¿Alguna vez has bebido café turco?"
+        },
+        {
+            englishTemplate: "I've ({verb}) some money to Julia.",
+            verbInfinitive: "give",
+            correctPastSimple: "given",
+            correctTranslation: "Le he dado algo de dinero a Julia."
+        },
+        {
+            englishTemplate: "Had you ({verb}) of this band before you came to the USA?",
+            verbInfinitive: "hear",
+            correctPastSimple: "heard",
+            correctTranslation: "¿Habías oído hablar de esta banda antes de venir a los EE.UU.?"
+        },
+        {
+            englishTemplate: "She has ({verb}) about this problem for three months.",
+            verbInfinitive: "know",
+            correctPastSimple: "known",
+            correctTranslation: "Ella ha sabido sobre este problema durante tres meses."
+        },
+        {
+            englishTemplate: "Why has John ({verb}) already?",
+            verbInfinitive: "leave",
+            correctPastSimple: "left",
+            correctTranslation: "¿Por qué se ha ido John ya?"
+        }
+    ];
+
+    const phrasesContainer = document.getElementById('phrases-container');
+
+    phrases.forEach((phrase, index) => {
+        const phraseItem = document.createElement('div');
+        phraseItem.classList.add('phrase-item');
+
+        const englishDisplay = phrase.englishTemplate.replace('{verb}', `(${phrase.verbInfinitive})`);
+
+        phraseItem.innerHTML = `
+            <div class="phrase-content">
+                <span class="phrase-number">${index + 1})</span>
+                <span class="phrase-text">${englishDisplay}</span>
+            </div>
+
+            <div class="input-row">
+                <label for="verb-input-${index}">Verbo en participio:</label>
+                <input type="text" class="verb-input" id="verb-input-${index}" placeholder="Escribe el verbo en participio">
+                <button class="btn btn-primary" data-index="${index}" data-action="check-verb">Revisar Verbo</button>
+                <button class="btn btn-secondary" data-index="${index}" data-action="show-verb">Mostrar Verbo</button>
+            </div>
+            <div class="feedback" id="feedback-verb-${index}"></div>
+            <div class="correct-answer" id="correct-verb-${index}">Respuesta Correcta: <strong>${phrase.correctPastSimple}</strong></div>
+
+            <div class="user-translation-section">
+                <div class="input-row">
+                    <label for="translation-input-${index}">Tu traducción:</label>
+                    <input type="text" class="translation-input" id="translation-input-${index}" placeholder="Traduce la frase al español">
+                    <button class="btn btn-check-translation" data-index="${index}" data-action="check-translation">Revisar Traducción</button>
+                    <button class="btn btn-show-translation" data-index="${index}" data-action="show-translation">Mostrar Traducción</button>
+                </div>
+                <div class="feedback" id="feedback-translation-${index}"></div>
+                <div class="correct-translation" id="correct-translation-${index}">Traducción Correcta: <strong>${phrase.correctTranslation}</strong></div>
+            </div>
+        `;
+        phrasesContainer.appendChild(phraseItem);
+    });
+
+    phrasesContainer.addEventListener('click', (event) => {
+        const target = event.target;
+        const index = target.dataset.index;
+
+        if (!index) return;
+
+        const action = target.dataset.action;
+
+        const verbInput = document.getElementById(`verb-input-${index}`);
+        const feedbackVerb = document.getElementById(`feedback-verb-${index}`);
+        const correctVerb = document.getElementById(`correct-verb-${index}`);
+
+        const translationInput = document.getElementById(`translation-input-${index}`);
+        const feedbackTranslation = document.getElementById(`feedback-translation-${index}`);
+        const correctTranslation = document.getElementById(`correct-translation-${index}`);
+
+        const phraseData = phrases[index];
+
+        switch (action) {
+            case 'check-verb':
+                const userAnswerVerb = verbInput.value.trim().toLowerCase();
+                const correctAnswerVerb = phraseData.correctPastSimple.toLowerCase();
+
+                if (userAnswerVerb === correctAnswerVerb) {
+                    feedbackVerb.textContent = '¡Correcto!';
+                    feedbackVerb.classList.remove('incorrect');
+                    feedbackVerb.classList.add('correct');
+                } else {
+                    feedbackVerb.textContent = 'Incorrecto. Inténtalo de nuevo.';
+                    feedbackVerb.classList.remove('correct');
+                    feedbackVerb.classList.add('incorrect');
+                }
+                correctVerb.style.display = 'none';
+                break;
+
+            case 'show-verb':
+                correctVerb.style.display = 'block';
+                feedbackVerb.textContent = '';
+                break;
+
+            case 'check-translation':
+                const userAnswerTranslation = translationInput.value.trim().toLowerCase();
+                const correctTranslationText = phraseData.correctTranslation.toLowerCase();
+
+                // Simplificación para la comparación de traducción:
+                const cleanUserTranslation = userAnswerTranslation.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," ");
+                const cleanCorrectTranslation = correctTranslationText.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," ");
+
+                if (cleanUserTranslation === cleanCorrectTranslation) {
+                    feedbackTranslation.textContent = '¡Traducción Correcta!';
+                    feedbackTranslation.classList.remove('incorrect');
+                    feedbackTranslation.classList.add('correct');
+                } else {
+                    feedbackTranslation.textContent = 'Traducción incorrecta. Revisa ortografía o fraseo.';
+                    feedbackTranslation.classList.remove('correct');
+                    feedbackTranslation.classList.add('incorrect');
+                }
+                correctTranslation.style.display = 'none';
+                break;
+
+            case 'show-translation':
+                correctTranslation.style.display = 'block';
+                feedbackTranslation.textContent = '';
+                break;
+        }
+    });
+});
+    </script>
+</body>
+</html>
