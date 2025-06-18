@@ -3,209 +3,252 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Practica de Pasado Simple 1 </title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <title>Irregular 1 con Español</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
+        
+        .navbar-brand, .nav-link {
+            color: rgb(3, 0, 0) !important;
+        } 
+        .nav-link:hover {
+            color: rgba(0, 0, 0, 0.8) !important;
+        }
         body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    line-height: 1.6;
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-}
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #000000;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
 
-.container {
-    background: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    width: 100%;
-}
+        .container {
+            background: #0098f0; 
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            margin: 20px auto;
+        }
 
-h1 {
-    color: #0056b3;
-    text-align: center;
-    margin-bottom: 20px;
-}
+        h1 {
+            color: #000000;
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-.phrase-item {
-    background-color: #e9ecef;
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 25px; /* Más espacio entre frases */
-    position: relative;
-}
+        .phrase-item {
+            background-color: #e9ecef;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 25px; /* Más espacio entre frases */
+            position: relative;
+        }
 
-.phrase-number {
-    font-weight: bold;
-    margin-right: 5px;
-}
+        .phrase-number {
+            font-weight: bold;
+            margin-right: 5px;
+        }
 
-.phrase-text {
-    font-size: 1.1em;
-    margin-bottom: 15px;
-    display: block; /* Para que ocupe su propia línea si es necesario */
-}
+        .phrase-text {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            display: block; /* Para que ocupe su propia línea si es necesario */
+        }
 
-/* Nuevos estilos para la sección de traducción del usuario */
-.user-translation-section {
-    margin-top: 15px;
-    border-top: 1px dashed #ccc;
-    padding-top: 15px;
-}
+        /* Nuevos estilos para la sección de traducción del usuario */
+        .user-translation-section {
+            margin-top: 15px;
+            border-top: 1px dashed #ccc;
+            padding-top: 15px;
+        }
 
-.user-translation-section label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
+        .user-translation-section label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
 
-.input-group {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-    margin-bottom: 10px; /* Espacio debajo de cada input-group */
-    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
-}
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            margin-bottom: 10px; /* Espacio debajo de cada input-group */
+            flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+        }
 
-.input-group label {
-    flex-basis: 100%; /* La etiqueta ocupa todo el ancho */
-    margin-bottom: 5px;
-}
+        .input-group label {
+            flex-basis: 100%; /* La etiqueta ocupa todo el ancho */
+            margin-bottom: 5px;
+        }
 
-.verb-input,
-.translation-input {
-    flex-grow: 1;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
-    margin-right: 10px;
-    min-width: 150px; /* Ancho mínimo para los inputs */
-}
+        .verb-input,
+        .translation-input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            margin-right: 10px;
+            min-width: 150px; /* Ancho mínimo para los inputs */
+        }
 
-.translation-input {
-    min-width: 250px; /* La traducción puede ser más larga */
-}
+        .translation-input {
+            min-width: 250px; /* La traducción puede ser más larga */
+        }
 
-.buttons {
-    display: flex;
-    gap: 5px;
-    margin-top: 10px;
-}
+        .buttons {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
 
-.btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9em;
-    transition: background-color 0.2s ease;
-    white-space: nowrap; /* Evita que el texto del botón se rompa */
-}
+        .btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.2s ease;
+            white-space: nowrap; /* Evita que el texto del botón se rompa */
+        }
 
-.btn:hover {
-    background-color: #0056b3;
-}
+        .btn:hover {
+            background-color: #0056b3;
+        }
 
-.btn-secondary {
-    background-color: #6c757d;
-}
+        .btn-secondary {
+            background-color: #6c757d;
+        }
 
-.btn-secondary:hover {
-    background-color: #5a6268;
-}
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
 
-.btn-check-translation {
-    background-color: #ffc107; /* Color amarillo/naranja para traducir */
-    color: #333;
-}
-.btn-check-translation:hover {
-    background-color: #e0a800;
-}
+        .btn-check-translation {
+            background-color: #ffc107; /* Color amarillo/naranja para traducir */
+            color: #333;
+        }
+        .btn-check-translation:hover {
+            background-color: #e0a800;
+        }
 
-.btn-show-translation {
-    background-color: #17a2b8; /* Color azul claro para mostrar traducción */
-}
-.btn-show-translation:hover {
-    background-color: #138496;
-}
+        .btn-show-translation {
+            background-color: #17a2b8; /* Color azul claro para mostrar traducción */
+        }
+        .btn-show-translation:hover {
+            background-color: #138496;
+        }
 
 
-.feedback {
-    margin-top: 10px;
-    font-weight: bold;
-    font-size: 0.95em;
-}
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 0.95em;
+        }
 
-.feedback.correct {
-    color: #28a745;
-}
+        .feedback.correct {
+            color: #28a745;
+        }
 
-.feedback.incorrect {
-    color: #dc3545;
-}
+        .feedback.incorrect {
+            color: #dc3545;
+        }
 
-.correct-answer {
-    margin-top: 10px;
-    font-weight: bold;
-    color: #007bff;
-    display: none; /* Oculto por defecto */
-    font-size: 0.95em;
-}
+        .correct-answer {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #007bff;
+            display: none; /* Oculto por defecto */
+            font-size: 0.95em;
+        }
 
-.correct-translation {
-    margin-top: 10px;
-    font-weight: bold;
-    color: #17a2b8; /* Usar el color del botón de mostrar traducción */
-    display: none; /* Oculto por defecto */
-    font-size: 0.95em;
-}
+        .correct-translation {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #17a2b8; /* Usar el color del botón de mostrar traducción */
+            display: none; /* Oculto por defecto */
+            font-size: 0.95em;
+        }
 
-/* Estilos para el espacio debajo del input cuando no hay botón, para alinear los de abajo */
-.input-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-}
+        /* Estilos para el espacio debajo del input cuando no hay botón, para alinear los de abajo */
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
 
-.input-row .btn {
-    margin-left: auto; /* Empuja el botón a la derecha si hay espacio */
-}
+        .input-row .btn {
+            margin-left: auto; /* Empuja el botón a la derecha si hay espacio */
+        }
 
-@media (max-width: 600px) {
-    .input-group, .input-row {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .verb-input, .translation-input {
-        width: 100%;
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
-    .buttons {
-        flex-direction: column;
-        width: 100%;
-        gap: 10px;
-    }
-    .btn {
-        width: 100%;
-    }
-}
+        @media (max-width: 600px) {
+            .input-group, .input-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .verb-input, .translation-input {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            .buttons {
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+            }
+            .btn {
+                width: 100%;
+            }
+        }
     </style>
+</head>
+<body class="bg-light">
+    <header class="mb-4">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">English Learning</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link active" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="regulares.html">Verbos Regulares</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="irregulares.html">Verbos Irregulares</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="ask.html">Llamada Telefónica</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="irregular_with_spanish.html">Irregular 1 con Español</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="irregular_with_spanish2.html">Irregular 2 con Español</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="irregular_with_spanish3_participio.html">Irregular Participio 1</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="irregular_with_spanish3_participio2.html">Irregular Participio 2</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </header>
     <div class="container">
         <h1>Practica de Pasado Simple 1</h1>
         <p>Completa las frases con el pasado simple del verbo entre paréntesis. Puedes traducir la frase al español y comprobar la respuesta.</p>
@@ -213,7 +256,8 @@ h1 {
         <div id="phrases-container">
             </div>
     </div>
- <script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
     document.addEventListener('DOMContentLoaded', () => {
     const phrases = [
         {

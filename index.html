@@ -57,7 +57,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="index.html">Home</a>
+              <a class="nav-link active" href="index.html">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="regulares.html">Verbos Regulares</a>
@@ -67,6 +67,18 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="ask.html">Llamada Telefónica</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="irregular_with_spanish.html">Irregular 1 con Español</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="irregular_with_spanish2.html">Irregular 2 con Español</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="irregular_with_spanish3_participio.html">Irregular Participio 1</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="irregular_with_spanish3_participio2.html">Irregular Participio 2</a>
             </li>
           </ul>
         </div>
@@ -164,16 +176,11 @@
         document.getElementById("feedback").classList.remove("text-danger");
         document.getElementById("feedback").classList.add("text-success");
       } else {
-        document.getElementById("feedback").textContent = `❌ Incorrect. The correct answer was: "${expected}"`;
+        document.getElementById("feedback").textContent = `❌ Incorrect! The correct time is ${expected}.`;
         document.getElementById("feedback").classList.remove("text-success");
         document.getElementById("feedback").classList.add("text-danger");
       }
     }
-
-    // Initialize
-    generateRandomTime();
   </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
